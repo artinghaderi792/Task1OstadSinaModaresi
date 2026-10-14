@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ثبت نام</title>
+</head>
+<body>
+
+    <h2>ثبت نام</h2>
+
+    <form id="sabtnamform">
+        <label>اسم:</label>
+        <input type="text" id="username" required>
+        <br><br>
+
+        <label>رمز:</label>
+        <input type="password" id="password" required>
+        <br><br>
+
+        <button type="submit">ثبت نام </button>
+    </form>
+
+    <h3>اسم های ثبت شده</h3>
+    <ul id="Namha"></ul>
+
+    <script>
+        let NamHayeZakhireShode = JSON.parse(
+            localStorage.getItem("NamHa") || "[]"
+        );
+
+        function showUsers() {
+            const list = document.getElementById("Namha");
+            list.innerHTML = "";
+
+            NamHayeZakhireShode.forEach(function(user) {
+                const item = document.createElement("li");
+                item.textContent = "اسم: " + user.username +  "  رمز  : " + user.password;
+                list.appendChild(item);
+            });
+        }
+
+        document.getElementById("sabtnamform")
+            .addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const username =
+                    document.getElementById("username").value;
+
+                const password =
+                    document.getElementById("password").value;
+
+                NamHayeZakhireShode.push({
+                    username: username,
+                    password: password
+                });
+
+                localStorage.setItem(
+                    "Namha",
+                    JSON.stringify(NamHayeZakhireShode)
+                );
+
+                showUsers();
+                this.reset();
+            });
+
+        showUsers();
+    </script>
+
+</body>
+</html>
